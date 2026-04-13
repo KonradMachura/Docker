@@ -2,10 +2,11 @@ services:
 
   # --- Server container ---
   server:
-    # Build the image from Dockerfile.server in the current directory
+    # context points to the server/ folder — that becomes the build root,
+    # so COPY instructions inside the Dockerfile are relative to server/
     build:
-      context: .
-      dockerfile: Dockerfile.server
+      context: ./server
+      dockerfile: Dockerfile
     # Expose port 8080 inside the network (no need to publish it to
     # the host machine — the client reaches it via the internal network)
     expose:
@@ -17,8 +18,8 @@ services:
   # --- Client container ---
   client:
     build:
-      context: .
-      dockerfile: Dockerfile.client
+      context: ./client
+      dockerfile: Dockerfile
     # Don't start the client until the server container has started
     # Note: this only waits for the *process* to start, not for it to be
     # ready — that's why client.py has a small sleep() as a safety margin

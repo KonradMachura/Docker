@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variable files — never commit secrets
+.env
+.env.*
+
+# Docker
+.docker/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

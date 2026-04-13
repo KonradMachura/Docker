@@ -1,0 +1,35 @@
+services:
+
+  # --- Server container ---
+  server:
+    # Build the image from Dockerfile.server in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    # Expose port 8080 inside the network (no need to publish it to
+    # the host machine — the client reaches it via the internal network)
+    expose:
+      - "8080"
+    # Attach this container to our custom network
+    networks:
+      - demo-net
+
+  # --- Client container ---
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    # Don't start the client until the server container has started
+    # Note: this only waits for the *process* to start, not for it to be
+    # ready — that's why client.py has a small sleep() as a safety margin
+    depends_on:
+      - server
+    networks:
+      - demo-net
+
+# Define the shared network both containers will join
+networks:
+  demo-net:
+    # "bridge" is the default driver — it creates an isolated virtual
+    # network on the host where containers can reach each other by name
+    driver: bridge
